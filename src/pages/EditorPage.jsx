@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { motion, AnimatePresence } from 'framer-motion';
 import { SlayteLogo } from '@/components/SlayteLogo';
 import { removeBackground } from '@imgly/background-removal';
+import { ModeToggle } from '@/components/mode-toggle';
 
 const FONTS = [
   'Inter', 'Roboto', 'Oswald', 'Bebas Neue', 'Montserrat',
@@ -48,8 +49,8 @@ function SliderRow({ label, value, unit = '', min, max, step = 1, onChange }) {
   return (
     <div className="space-y-2.5">
       <div className="flex items-center justify-between">
-        <span className="text-[12px] font-semibold text-[#888] uppercase tracking-wider">{label}</span>
-        <span className="text-[11px] tabular-nums text-[#aaa] font-mono bg-white/[0.03] border border-white/[0.05] px-1.5 py-0.5 rounded">{value}{unit}</span>
+        <span className="text-[12px] font-semibold text-muted-foreground uppercase tracking-wider">{label}</span>
+        <span className="text-[11px] tabular-nums text-muted-foreground font-mono bg-card border border-border px-1.5 py-0.5 rounded">{value}{unit}</span>
       </div>
       <Slider
         value={value}
@@ -185,34 +186,33 @@ export default function EditorPage({ image, onLeave }) {
   // (belowLayers/aboveLayers computed above, before handleDownload)
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden" style={{ background: '#080808' }}>
+    <div className="flex flex-col h-screen overflow-hidden bg-background">
 
       {/* ─── HEADER ─── */}
-      <header className="h-14 flex items-center justify-between px-5 border-b border-white/[0.06] flex-shrink-0">
+      <header className="h-14 flex items-center justify-between px-5 border-b border-border flex-shrink-0">
         <div className="flex items-center gap-5">
           <button
             onClick={onLeave}
-            className="flex items-center gap-2 text-[13px] text-[#666] hover:text-[#f1f0ec] transition-colors font-medium"
-          >
+            className="flex items-center gap-2 text-[13px] text-muted-foreground hover:text-foreground transition-colors font-medium">
             <ArrowLeft className="w-3.5 h-3.5" />
             Back
           </button>
-          <div className="w-px h-5 bg-white/[0.08]" />
+          <div className="w-px h-5 bg-border" />
           <SlayteLogo size={22} />
         </div>
 
         <div className="flex items-center gap-2.5">
+          <ModeToggle />
+          <div className="w-px h-5 bg-border mx-1" />
           <button
             onClick={resetCanvas}
-            className="flex items-center gap-1.5 h-8 px-3.5 rounded-lg text-[12px] font-medium text-[#888] border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] hover:text-[#ccc] transition-all"
-          >
+            className="flex items-center gap-1.5 h-8 px-3.5 rounded-lg text-[12px] font-medium text-muted-foreground border border-border bg-muted/50 hover:bg-muted hover:text-foreground transition-all">
             <RotateCcw className="w-3 h-3" />
             Reset
           </button>
           <button
             onClick={handleDownload}
-            className="flex items-center gap-1.5 h-8 px-4 rounded-lg text-[12px] font-medium text-[#f1f0ec] bg-[#7c3aed] hover:bg-[#6d2ed0] transition-all shadow-md shadow-purple-900/30"
-          >
+            className="flex items-center gap-1.5 h-8 px-4 rounded-lg text-[12px] font-medium text-primary-foreground bg-primary hover:bg-primary/90 transition-all shadow-md shadow-purple-900/30">
             <Download className="w-3 h-3" />
             Export
           </button>
@@ -223,7 +223,7 @@ export default function EditorPage({ image, onLeave }) {
       <div className="flex-1 flex overflow-hidden">
 
         {/* Canvas Area */}
-        <div className="flex-1 flex items-center justify-center p-8 overflow-auto relative" style={{ background: '#0c0c0c' }}>
+        <div className="flex-1 flex items-center justify-center p-8 overflow-auto relative bg-secondary">
           {/*
             All layers (base image, text, subject mask) are absolutely stacked
             inside a single relative container sized by an invisible placeholder img.
@@ -277,25 +277,25 @@ export default function EditorPage({ image, onLeave }) {
 
           {/* Processing Indicator */}
           {isProcessingSubject && (
-            <div className="absolute top-6 right-6 flex items-center gap-2.5 px-4 py-2 bg-[#111] backdrop-blur-md rounded-full border border-white/10 text-white shadow-xl z-50">
+            <div className="absolute top-6 right-6 flex items-center gap-2.5 px-4 py-2 bg-card backdrop-blur-md rounded-full border border-border text-foreground shadow-xl z-50">
                <span className="w-3 h-3 border-2 border-[#555] border-t-white rounded-full animate-spin"></span>
-               <span className="text-[12px] font-medium text-[#ccc]">Extracting subject mask...</span>
+               <span className="text-[12px] font-medium text-muted-foreground">Extracting subject mask...</span>
             </div>
           )}
         </div>
 
         {/* ─── SIDEBAR ─── */}
-        <div className="w-[380px] flex flex-col flex-shrink-0 border-l border-white/[0.06] overflow-hidden" style={{ background: '#0f0f0f' }}>
+        <div className="w-[380px] flex flex-col flex-shrink-0 border-l border-border overflow-hidden bg-card">
 
           {/* Sidebar Header */}
-          <div className="px-5 py-4 border-b border-white/[0.06]">
+          <div className="px-5 py-4 border-b border-border">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-[14px] font-semibold text-[#f1f0ec] tracking-tight">Text Layers</h2>
-              <span className="text-[11px] text-[#555] tabular-nums">{layers.length} layer{layers.length !== 1 ? 's' : ''}</span>
+              <h2 className="text-[14px] font-semibold text-foreground tracking-tight">Text Layers</h2>
+              <span className="text-[11px] text-muted-foreground tabular-nums">{layers.length} layer{layers.length !== 1 ? 's' : ''}</span>
             </div>
             <button
               onClick={addLayer}
-              className="w-full h-10 flex items-center justify-center gap-2 rounded-lg text-[13px] font-medium text-[#ccc] border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/[0.14] transition-all"
+              className="w-full h-10 flex items-center justify-center gap-2 rounded-lg text-[13px] font-medium text-muted-foreground border border-border bg-card hover:bg-muted hover:border-border transition-all"
             >
               <Plus className="w-3.5 h-3.5" />
               Add Text
@@ -312,7 +312,7 @@ export default function EditorPage({ image, onLeave }) {
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="border-b border-white/[0.04]"
+                  className="border-b border-border"
                 >
                   {/* Layer Header — outer must be div (not button) to avoid invalid nested-button HTML */}
                   <div
@@ -320,11 +320,11 @@ export default function EditorPage({ image, onLeave }) {
                     tabIndex={0}
                     onClick={() => toggleExpand(layer.id)}
                     onKeyDown={e => e.key === 'Enter' && toggleExpand(layer.id)}
-                    className="w-full flex items-center justify-between px-5 py-3.5 hover:bg-white/[0.03] transition-colors cursor-pointer select-none"
+                    className="w-full flex items-center justify-between px-5 py-3.5 hover:bg-card transition-colors cursor-pointer select-none"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <ChevronRight className={`w-3.5 h-3.5 text-[#555] flex-shrink-0 transition-transform duration-200 ${expandedLayer === layer.id ? 'rotate-90' : ''}`} />
-                      <span className="text-[13px] font-medium text-[#ccc] truncate">
+                      <ChevronRight className={`w-3.5 h-3.5 text-muted-foreground flex-shrink-0 transition-transform duration-200 ${expandedLayer === layer.id ? 'rotate-90' : ''}`} />
+                      <span className="text-[13px] font-medium text-muted-foreground truncate">
                         {layer.text || 'Empty'}
                       </span>
                     </div>
@@ -332,7 +332,7 @@ export default function EditorPage({ image, onLeave }) {
                       onClick={(e) => { e.stopPropagation(); removeLayer(layer.id); }}
                       className="p-1 rounded hover:bg-red-500/10 transition-colors flex-shrink-0"
                     >
-                      <Trash2 className="w-3 h-3 text-[#555] hover:text-red-400" />
+                      <Trash2 className="w-3 h-3 text-muted-foreground hover:text-red-400" />
                     </button>
                   </div>
 
@@ -350,24 +350,24 @@ export default function EditorPage({ image, onLeave }) {
 
                           {/* Text Input */}
                           <div className="space-y-2">
-                            <span className="text-[13px] font-medium text-[#aaa]">Text</span>
+                            <span className="text-[13px] font-medium text-muted-foreground">Text</span>
                             <Input
                               value={layer.text}
                               onChange={(e) => updateLayer(layer.id, 'text', e.target.value)}
-                              className="h-10 text-[14px] bg-white/[0.04] border-white/[0.08] rounded-lg text-[#f1f0ec] placeholder:text-[#555] focus-visible:ring-1 focus-visible:ring-[#7c3aed]/50 focus-visible:border-[#7c3aed]/30"
+                              className="h-10 text-[14px] bg-card border-border rounded-lg text-foreground placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-[#7c3aed]/50 focus-visible:border-[#7c3aed]/30"
                             />
                           </div>
 
                           {/* Font Family */}
                           <div className="space-y-2">
-                            <span className="text-[13px] font-medium text-[#aaa]">Font Family</span>
+                            <span className="text-[13px] font-medium text-muted-foreground">Font Family</span>
                             <Select value={layer.fontFamily} onValueChange={(val) => updateLayer(layer.id, 'fontFamily', val)}>
-                              <SelectTrigger className="h-10 text-[13px] bg-white/[0.04] border-white/[0.08] rounded-lg text-[#ccc]">
+                              <SelectTrigger className="h-10 text-[13px] bg-card border-border rounded-lg text-muted-foreground">
                                 <SelectValue />
                               </SelectTrigger>
-                              <SelectContent className="bg-[#1a1a1a] border-white/[0.08] text-[#ccc]">
+                              <SelectContent className="bg-popover border-border text-foreground">
                                 {FONTS.map(f => (
-                                  <SelectItem key={f} value={f} className="text-[13px] focus:bg-white/[0.06]" style={{ fontFamily: f }}>
+                                  <SelectItem key={f} value={f} className="text-[13px] focus:bg-muted" style={{ fontFamily: f }}>
                                     {f}
                                   </SelectItem>
                                 ))}
@@ -452,9 +452,9 @@ export default function EditorPage({ image, onLeave }) {
                           />
 
                           {/* Toggles */}
-                          <div className="space-y-1 pt-3 mt-1 border-t border-white/[0.06]">
+                          <div className="space-y-1 pt-3 mt-1 border-t border-border">
                             <div className="flex items-center justify-between py-2.5">
-                              <span className="text-[13px] font-medium text-[#aaa]">Drop Shadow</span>
+                              <span className="text-[13px] font-medium text-muted-foreground">Drop Shadow</span>
                               <Switch
                                 checked={layer.dropShadow}
                                 onCheckedChange={(val) => updateLayer(layer.id, 'dropShadow', val)}
@@ -463,7 +463,7 @@ export default function EditorPage({ image, onLeave }) {
                             </div>
                             <div className="flex items-center justify-between py-2.5">
                               <div className="flex flex-col">
-                                <span className="text-[13px] font-medium text-[#aaa]">Layering</span>
+                                <span className="text-[13px] font-medium text-muted-foreground">Layering</span>
                                 <span className="text-[10px] font-medium" style={{
                                   color: isProcessingSubject ? '#f59e0b' : (subjectImageUrl ? '#5DCAA5' : '#555')
                                 }}>
@@ -516,10 +516,10 @@ export default function EditorPage({ image, onLeave }) {
 
             {layers.length === 0 && (
               <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
-                <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center mb-3">
-                  <Plus className="w-4 h-4 text-[#555]" />
+                <div className="w-10 h-10 rounded-xl bg-card border border-border flex items-center justify-center mb-3">
+                  <Plus className="w-4 h-4 text-muted-foreground" />
                 </div>
-                <p className="text-[13px] text-[#555] leading-relaxed">
+                <p className="text-[13px] text-muted-foreground leading-relaxed">
                   No text layers yet.<br />Click "Add Text" to start.
                 </p>
               </div>
@@ -532,8 +532,8 @@ export default function EditorPage({ image, onLeave }) {
       <style dangerouslySetInnerHTML={{ __html: `
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(128,128,128,0.2); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(128,128,128,0.4); }
       `}} />
     </div>
   );
@@ -574,12 +574,12 @@ function ColorPicker({ value, onChange }) {
 
   return (
     <div className="space-y-2">
-      <span className="text-[13px] font-medium text-[#aaa]">Color</span>
+      <span className="text-[13px] font-medium text-muted-foreground">Color</span>
       <div className="flex items-center gap-2.5">
         {/* Swatch — clicking it opens the native color picker */}
         <div
           onClick={() => inputRef.current?.click()}
-          className="w-10 h-10 rounded-lg border border-white/[0.1] flex-shrink-0 cursor-pointer transition-transform hover:scale-105 active:scale-95"
+          className="w-10 h-10 rounded-lg border border-border flex-shrink-0 cursor-pointer transition-transform hover:scale-105 active:scale-95"
           style={{ backgroundColor: safeValue }}
           title="Click to pick a color"
         >
@@ -597,7 +597,7 @@ function ColorPicker({ value, onChange }) {
         <Input
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="h-10 text-[13px] font-mono bg-white/[0.04] border-white/[0.08] rounded-lg text-[#aaa] flex-1 focus-visible:ring-1 focus-visible:ring-[#7c3aed]/50"
+          className="h-10 text-[13px] font-mono bg-card border-border rounded-lg text-muted-foreground flex-1 focus-visible:ring-1 focus-visible:ring-[#7c3aed]/50"
         />
       </div>
     </div>

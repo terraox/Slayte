@@ -8,7 +8,7 @@ import { SlayteLogo } from '@/components/SlayteLogo';
 import { BLOCK_TYPES, createBlock } from './blockDefs';
 import { BlockRenderer, generateEmailHTML } from './BlockRenderer';
 import { PropertyEditor } from './PropertyEditor';
-
+import { ModeToggle } from '@/components/mode-toggle';
 // ─── Toast ───────────────────────────────────────────────────────────────────
 function Toast({ message, onDone }) {
   return (
@@ -17,7 +17,7 @@ function Toast({ message, onDone }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
       onAnimationComplete={() => setTimeout(onDone, 1800)}
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-2.5 px-5 py-3 rounded-full border border-[#5DCAA5]/30 bg-[#0f0f0f] text-[#5DCAA5] shadow-xl text-[13px] font-medium"
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-2.5 px-5 py-3 rounded-full border border-[#5DCAA5]/30 bg-popover text-[#5DCAA5] shadow-xl text-[13px] font-medium"
     >
       <Check className="w-4 h-4" />
       {message}
@@ -44,7 +44,7 @@ function BlockTile({ blockDef }) {
         e.dataTransfer.setData('blockType', blockDef.type);
         e.dataTransfer.effectAllowed = 'copy';
       }}
-      className="group flex flex-col items-center justify-center gap-2 p-3 rounded-xl border border-white/[0.06] bg-white/[0.02] cursor-grab active:cursor-grabbing select-none transition-all duration-150 hover:bg-white/[0.05] hover:border-white/[0.12] hover:shadow-sm"
+      className="group flex flex-col items-center justify-center gap-2 p-3 rounded-xl border border-border bg-card cursor-grab active:cursor-grabbing select-none transition-all duration-150 hover:bg-muted hover:border-border hover:shadow-sm"
     >
       {/* Icon badge */}
       <div
@@ -54,7 +54,7 @@ function BlockTile({ blockDef }) {
         <span style={{ fontSize: 16, lineHeight: 1 }}>{blockDef.icon}</span>
       </div>
       {/* Label */}
-      <span className="text-[11px] font-medium text-[#666] group-hover:text-[#aaa] transition-colors tracking-wide text-center leading-tight">
+      <span className="text-[11px] font-medium text-muted-foreground group-hover:text-muted-foreground transition-colors tracking-wide text-center leading-tight">
         {blockDef.label}
       </span>
     </div>
@@ -73,12 +73,12 @@ function CanvasBlock({ block, isSelected, onSelect, onDelete, onDragStart, onDra
       className={`group relative rounded-lg border transition-all cursor-pointer mb-2 ${
         isSelected
           ? 'border-[#7c3aed]/60 bg-[#7c3aed]/[0.04] shadow-[0_0_0_1px_rgba(124,58,237,0.2)]'
-          : 'border-transparent hover:border-white/[0.1] hover:bg-white/[0.02]'
+          : 'border-transparent hover:border-border hover:bg-card'
       }`}
     >
       {/* Drag handle */}
       <div className="absolute left-0 top-0 bottom-0 w-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-grab">
-        <GripVertical className="w-3.5 h-3.5 text-[#444]" />
+        <GripVertical className="w-3.5 h-3.5 text-muted-foreground" />
       </div>
 
       {/* Delete button */}
@@ -86,7 +86,7 @@ function CanvasBlock({ block, isSelected, onSelect, onDelete, onDragStart, onDra
         onClick={e => { e.stopPropagation(); onDelete(); }}
         className="absolute right-2 top-2 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500/10 z-10"
       >
-        <Trash2 className="w-3 h-3 text-[#555] hover:text-red-400" />
+        <Trash2 className="w-3 h-3 text-muted-foreground hover:text-red-400" />
       </button>
 
       {/* Block content */}
@@ -176,19 +176,19 @@ export default function EmailEditorPage({ onLeave, onExport }) {
   const canvasMaxWidth = previewMode === 'mobile' ? 440 : 820;
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden" style={{ background: '#080808' }}>
+    <div className="flex flex-col h-screen overflow-hidden bg-background">
 
       {/* ─── TOOLBAR ─── */}
-      <header className="h-14 flex items-center justify-between px-4 border-b border-white/[0.06] flex-shrink-0 gap-4">
+      <header className="h-14 flex items-center justify-between px-4 border-b border-border flex-shrink-0 gap-4">
 
         {/* Left: back + logo */}
         <div className="flex items-center gap-4 flex-shrink-0">
           <button onClick={onLeave}
-            className="flex items-center gap-1.5 text-[13px] text-[#666] hover:text-[#f1f0ec] transition-colors font-medium">
+            className="flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-foreground transition-colors font-medium">
             <ArrowLeft className="w-3.5 h-3.5" />
             Back
           </button>
-          <div className="w-px h-5 bg-white/[0.08]" />
+          <div className="w-px h-5 bg-border" />
           <SlayteLogo size={22} />
         </div>
 
@@ -201,16 +201,16 @@ export default function EmailEditorPage({ onLeave, onExport }) {
               onChange={e => setEmailTitle(e.target.value)}
               onBlur={() => setEditingTitle(false)}
               onKeyDown={e => e.key === 'Enter' && setEditingTitle(false)}
-              className="text-[13px] font-medium text-[#f1f0ec] bg-white/[0.06] border border-white/[0.12] rounded-lg px-3 py-1.5 focus:outline-none focus:border-[#7c3aed]/50 max-w-[220px]"
+              className="text-[13px] font-medium text-foreground bg-muted border border-border rounded-lg px-3 py-1.5 focus:outline-none focus:border-[#7c3aed]/50 max-w-[220px]"
             />
           ) : (
             <button onClick={() => setEditingTitle(true)}
-              className="text-[13px] font-medium text-[#f1f0ec] hover:text-white truncate max-w-[180px]">
+              className="text-[13px] font-medium text-foreground hover:opacity-80 truncate max-w-[180px]">
               {emailTitle}
             </button>
           )}
 
-          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-white/[0.08] bg-white/[0.03] text-[#555] tracking-wider">
+          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-border bg-muted text-muted-foreground tracking-wider">
             Email
           </span>
 
@@ -223,7 +223,7 @@ export default function EmailEditorPage({ onLeave, onExport }) {
               { Icon: Languages, title: 'Translate' },
             ].map(({ Icon, title }) => (
               <button key={title} title={title}
-                className="p-2 rounded-lg text-[#888] hover:text-[#f1f0ec] hover:bg-white/[0.05] transition-colors">
+                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                 <Icon className="w-3.5 h-3.5" />
               </button>
             ))}
@@ -231,28 +231,32 @@ export default function EmailEditorPage({ onLeave, onExport }) {
         </div>
 
         {/* Right: export */}
-        <button onClick={handleExport}
-          className="flex items-center gap-1.5 h-8 px-5 rounded-lg text-[12px] font-semibold text-white flex-shrink-0 transition-all shadow-lg shadow-purple-900/40 hover:shadow-purple-900/60 hover:scale-[1.03] active:scale-100"
-          style={{ background: 'linear-gradient(135deg, #7c3aed, #5DCAA5)' }}>
-          <Download className="w-3 h-3" />
-          Export
-        </button>
+        <div className="flex items-center gap-3">
+          <ModeToggle />
+          <div className="w-px h-5 bg-border" />
+          <button onClick={handleExport}
+            className="flex items-center gap-1.5 h-8 px-5 rounded-lg text-[12px] font-semibold text-white flex-shrink-0 transition-all shadow-lg shadow-purple-900/40 hover:shadow-purple-900/60 hover:scale-[1.03] active:scale-100"
+            style={{ background: 'linear-gradient(135deg, #7c3aed, #5DCAA5)' }}>
+            <Download className="w-3 h-3" />
+            Export
+          </button>
+        </div>
       </header>
 
       {/* ─── WORKSPACE ─── */}
       <div className="flex-1 flex overflow-hidden">
 
         {/* ── Canvas area ── */}
-        <div className="flex-1 flex flex-col overflow-hidden" style={{ background: '#0c0c0c' }}>
+        <div className="flex-1 flex flex-col overflow-hidden bg-secondary">
 
           {/* Preview toggle */}
           <div className="flex items-center gap-1.5 px-6 pt-4 pb-2">
             <button onClick={() => setPreviewMode('desktop')}
-              className={`p-1.5 rounded-lg transition-colors ${previewMode === 'desktop' ? 'text-[#f1f0ec] bg-white/[0.08]' : 'text-[#555] hover:text-[#888]'}`}>
+              className={`p-1.5 rounded-lg transition-colors ${previewMode === 'desktop' ? 'text-foreground bg-muted' : 'text-muted-foreground hover:text-muted-foreground'}`}>
               <Monitor className="w-4 h-4" />
             </button>
             <button onClick={() => setPreviewMode('mobile')}
-              className={`p-1.5 rounded-lg transition-colors ${previewMode === 'mobile' ? 'text-[#f1f0ec] bg-white/[0.08]' : 'text-[#555] hover:text-[#888]'}`}>
+              className={`p-1.5 rounded-lg transition-colors ${previewMode === 'mobile' ? 'text-foreground bg-muted' : 'text-muted-foreground hover:text-muted-foreground'}`}>
               <Smartphone className="w-4 h-4" />
             </button>
           </div>
@@ -265,8 +269,8 @@ export default function EmailEditorPage({ onLeave, onExport }) {
             >
               {/* Email shell */}
               <div
-                className="rounded-2xl overflow-hidden shadow-2xl shadow-black/60"
-                style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.07)', minHeight: 'calc(100vh - 220px)' }}
+                className="rounded-2xl overflow-hidden shadow-2xl shadow-black/60 bg-card border border-border"
+                style={{ minHeight: 'calc(100vh - 220px)' }}
                 onDragOver={e => { e.preventDefault(); setDropHighlight(true); }}
                 onDragLeave={() => setDropHighlight(false)}
                 onDrop={handleCanvasDrop}
@@ -278,16 +282,16 @@ export default function EmailEditorPage({ onLeave, onExport }) {
                       className={`flex flex-col items-center justify-center rounded-2xl border-2 border-dashed transition-all duration-300 ${
                         dropHighlight
                           ? 'border-[#7c3aed]/60 bg-[#7c3aed]/[0.06]'
-                          : 'border-white/[0.08]'
+                          : 'border-border'
                       }`}
                       style={{ minHeight: 'calc(100vh - 340px)' }}
                     >
                       <div className={`flex flex-col items-center gap-4 transition-transform duration-300 ${dropHighlight ? 'scale-105' : ''}`}>
-                        <div className="w-14 h-14 rounded-2xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center">
+                        <div className="w-14 h-14 rounded-2xl bg-muted border border-border flex items-center justify-center">
                           <span className="text-2xl">✦</span>
                         </div>
-                        <p className="text-[15px] text-[#444] font-medium">Drop content blocks here</p>
-                        <p className="text-[13px] text-[#2e2e2e]">Drag from the Content panel →</p>
+                        <p className="text-[15px] text-muted-foreground font-medium">Drop content blocks here</p>
+                        <p className="text-[13px] text-muted-foreground/60">Drag from the Content panel →</p>
                       </div>
                     </div>
                   ) : (
@@ -317,8 +321,8 @@ export default function EmailEditorPage({ onLeave, onExport }) {
                 </div>
 
                 {/* Footer */}
-                <div className="px-10 py-6 border-t border-white/[0.04] text-center">
-                  <p className="text-[12px] text-[#2e2e2e]">Designed with Slayte</p>
+                <div className="px-10 py-6 border-t border-border text-center">
+                  <p className="text-[12px] text-muted-foreground/60">Designed with Slayte</p>
                 </div>
               </div>
             </div>
@@ -331,7 +335,7 @@ export default function EmailEditorPage({ onLeave, onExport }) {
           {/* Collapse toggle tab */}
           <button
             onClick={() => setSidebarOpen(o => !o)}
-            className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 w-6 h-10 rounded-full border border-white/[0.1] bg-[#161616] flex items-center justify-center text-[#555] hover:text-[#aaa] hover:border-white/[0.2] transition-all shadow-md"
+            className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 w-6 h-10 rounded-full border border-border bg-popover flex items-center justify-center text-muted-foreground hover:text-muted-foreground hover:border-border transition-all shadow-md"
             title={sidebarOpen ? 'Collapse panel' : 'Expand panel'}
           >
             <motion.span
@@ -346,8 +350,7 @@ export default function EmailEditorPage({ onLeave, onExport }) {
           <motion.div
             animate={{ width: sidebarOpen ? 340 : 0, opacity: sidebarOpen ? 1 : 0 }}
             transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-            className="flex flex-col overflow-hidden border-l border-white/[0.06]"
-            style={{ background: '#0f0f0f' }}
+            className="flex flex-col overflow-hidden border-l border-border bg-card"
           >
             <div className="w-[340px] flex flex-col h-full">
               <AnimatePresence mode="wait">
@@ -365,10 +368,10 @@ export default function EmailEditorPage({ onLeave, onExport }) {
                   <motion.div key="blocks" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.15 }} className="flex flex-col h-full">
 
                     {/* Sidebar header */}
-                    <div className="px-5 py-4 border-b border-white/[0.06] flex-shrink-0">
-                      <p className="text-[10px] font-semibold uppercase tracking-widest text-[#444] mb-1">Elements</p>
-                      <h2 className="text-[15px] font-semibold text-[#f1f0ec] tracking-tight">Content Blocks</h2>
-                      <p className="text-[12px] text-[#444] mt-1">Drag any block onto the canvas</p>
+                    <div className="px-5 py-4 border-b border-border flex-shrink-0">
+                      <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1">Elements</p>
+                      <h2 className="text-[15px] font-semibold text-foreground tracking-tight">Content Blocks</h2>
+                      <p className="text-[12px] text-muted-foreground mt-1">Drag any block onto the canvas</p>
                     </div>
 
                     {/* Block grid */}
@@ -392,8 +395,8 @@ export default function EmailEditorPage({ onLeave, onExport }) {
       <style dangerouslySetInnerHTML={{ __html: `
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(128,128,128,0.2); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(128,128,128,0.4); }
       `}} />
 
       {/* Toast */}

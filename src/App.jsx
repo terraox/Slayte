@@ -14,10 +14,6 @@ function App() {
   const [exportedEmailHtml, setExportedEmailHtml] = useState(null);
 
   useEffect(() => {
-    document.documentElement.classList.add('dark');
-  }, []);
-
-  useEffect(() => {
     const lenis = new Lenis({
       autoRaf: true,
       duration: 1.2,

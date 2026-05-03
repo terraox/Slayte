@@ -16,7 +16,7 @@ export function SlayteLogo({ className = "", size = 28 }) {
 
       {/* Wordmark */}
       <span 
-        className="font-serif font-bold tracking-tighter text-[#f1f0ec]" 
+        className="font-serif font-bold tracking-tighter text-foreground" 
         style={{ fontSize: textSize, lineHeight: 1 }}
       >
         slayte

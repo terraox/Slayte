@@ -36,11 +36,11 @@ function Switch({
         width: trackW,
         height: trackH,
         backgroundColor: checked
-          ? (checkedColor ?? "rgba(255,255,255,0.25)")
-          : "rgba(255,255,255,0.05)",
+          ? (checkedColor ?? "hsl(var(--primary))")
+          : "hsl(var(--border))",
         borderColor: checked
-          ? (checkedColor ? `${checkedColor}55` : "rgba(255,255,255,0.2)")
-          : "rgba(255,255,255,0.1)",
+          ? (checkedColor ? `${checkedColor}55` : "hsl(var(--primary)/0.2)")
+          : "hsl(var(--border))",
       }}
       {...props}
     >

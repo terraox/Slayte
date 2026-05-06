@@ -73,19 +73,24 @@ export default function EditorPage({ image, onLeave }) {
 
   useEffect(() => {
     if (image?.url) {
+      console.log("EditorPage: Received image URL", image.url);
       const processImage = async () => {
         setIsProcessingSubject(true);
         try {
+          console.log("EditorPage: Starting background removal...");
           const blob = await removeBackground(image.url);
+          console.log("EditorPage: Background removal success", blob.type, blob.size);
           const url = URL.createObjectURL(blob);
           setSubjectImageUrl(url);
         } catch (err) {
-          console.error("Background removal failed:", err);
+          console.error("EditorPage: Background removal failed", err);
         } finally {
           setIsProcessingSubject(false);
         }
       };
       processImage();
+    } else {
+      console.warn("EditorPage: No image URL received");
     }
   }, [image]);
 
@@ -250,7 +255,6 @@ export default function EditorPage({ image, onLeave }) {
               alt="Canvas"
               className="absolute inset-0 w-full h-full object-contain pointer-events-none"
               style={{ zIndex: 0 }}
-              crossOrigin="anonymous"
             />
 
             {/* z-index 1 — Text layers rendered BEHIND the subject */}
@@ -265,7 +269,6 @@ export default function EditorPage({ image, onLeave }) {
                 alt="Subject Mask"
                 className="absolute inset-0 w-full h-full object-contain pointer-events-none"
                 style={{ zIndex: 2 }}
-                crossOrigin="anonymous"
               />
             )}
 

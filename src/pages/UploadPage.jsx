@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { UploadCloud, Paperclip, ArrowLeft } from 'lucide-react';
 import { ShimmerButton } from '@/components/magicui/shimmer-button';
@@ -8,9 +8,11 @@ import { ModeToggle } from '@/components/mode-toggle';
 
 export default function UploadPage({ onImageUpload, onBack }) {
   const [isHovering, setIsHovering] = useState(false);
+  const fileInputRef = useRef(null);
 
   const handleDrop = useCallback((e) => {
     e.preventDefault();
+    e.stopPropagation();
     setIsHovering(false);
     const file = e.dataTransfer.files[0];
     if (file && file.type.startsWith('image/')) {
@@ -18,33 +20,66 @@ export default function UploadPage({ onImageUpload, onBack }) {
     }
   }, []);
 
-  const handleFileSelected = async (file) => {
+  const handleFileSelected = (file) => {
+    if (!file) return;
+    
+    console.log("UploadPage: File selected", file.name, file.type);
+    
+    // 1. Create a local preview URL
     const localUrl = URL.createObjectURL(file);
+    
+    // 2. Pass to parent (App.jsx) immediately to switch to editor
     onImageUpload({ url: localUrl, file });
 
+    // 3. Background server upload (non-blocking)
     const formData = new FormData();
     formData.append('image', file);
-    try {
-      const res = await fetch('http://localhost:3001/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
+    fetch('http://localhost:3001/api/upload', {
+      method: 'POST',
+      body: formData,
+    })
+    .then(async res => {
       const data = await res.json();
-      if (res.ok) console.log("Uploaded:", data);
-    } catch (err) {
-      console.error("Upload failed:", err);
-    }
+      if (res.ok) console.log("UploadPage: Server upload success", data);
+      else console.error("UploadPage: Server upload error", data);
+    })
+    .catch(err => {
+      console.error("UploadPage: Network error during upload", err);
+    });
   };
 
   const handleDragOver = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     setIsHovering(true);
   };
 
-  const handleDragLeave = () => setIsHovering(false);
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsHovering(false);
+  };
+
+  const triggerFileInput = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("UploadPage: Triggering file input");
+    fileInputRef.current?.click();
+  };
 
   return (
     <div className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-background">
+      
+      {/* Hidden file input — kept separate from clickable UI */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        className="hidden"
+        accept="image/*"
+        onChange={(e) => {
+          if (e.target.files?.[0]) handleFileSelected(e.target.files[0]);
+        }}
+      />
 
       {/* Theme toggle — top right */}
       <div className="absolute top-4 right-4 z-50">
@@ -87,10 +122,11 @@ export default function UploadPage({ onImageUpload, onBack }) {
 
         {/* Dropzone */}
         <BlurFade delay={0.25} inView className="w-full">
-          <label
+          <div
             onDrop={handleDrop}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
+            onClick={triggerFileInput}
             className={`
               group relative flex flex-col items-center justify-center w-full py-14 px-8
               rounded-[28px] border transition-all duration-500 ease-out cursor-pointer overflow-hidden
@@ -100,15 +136,6 @@ export default function UploadPage({ onImageUpload, onBack }) {
                 : 'border-border bg-white/[0.025] hover:border-border hover:bg-card'}
             `}
           >
-            <input
-              type="file"
-              className="hidden"
-              accept="image/*"
-              onChange={(e) => {
-                if (e.target.files?.[0]) handleFileSelected(e.target.files[0]);
-              }}
-            />
-
             {/* Inner ambient glow */}
             <div className="absolute inset-0 rounded-[inherit] pointer-events-none overflow-hidden">
               <div 
@@ -159,11 +186,12 @@ export default function UploadPage({ onImageUpload, onBack }) {
               shimmerDuration="2s"
               background="rgba(124, 58, 237, 0.08)"
               className="h-10 px-6 shadow-none border border-border group-hover:border-border transition-colors"
+              onClick={triggerFileInput}
             >
               <Paperclip className="w-3.5 h-3.5 mr-2 text-muted-foreground" />
               <span className="text-[13px] font-medium text-muted-foreground">Select File</span>
             </ShimmerButton>
-          </label>
+          </div>
         </BlurFade>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import {
   ArrowLeft, Monitor, Smartphone, Eye, Send, Paintbrush,
   MessageSquare, Languages, Download, Trash2, GripVertical, Check
@@ -103,7 +103,7 @@ function CanvasBlock({ block, isSelected, onSelect, onDelete, onDragStart, onDra
 }
 
 // ─── Main EmailEditorPage ─────────────────────────────────────────────────────
-export default function EmailEditorPage({ onLeave, onExport }) {
+export default function EmailEditorPage({ onLeave, onExport, onNavigate }) {
   const [blocks, setBlocks] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [emailTitle, setEmailTitle] = useState('Untitled Email');
@@ -114,6 +114,11 @@ export default function EmailEditorPage({ onLeave, onExport }) {
   const [dragOverId, setDragOverId] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const dragBlockId = useRef(null);
+
+  useEffect(() => {
+    document.title = 'Email Builder — Slayte';
+    return () => { document.title = 'Slayte'; };
+  }, []);
 
   const selectedBlock = blocks.find(b => b.id === selectedId) || null;
 
@@ -181,8 +186,8 @@ export default function EmailEditorPage({ onLeave, onExport }) {
       {/* ─── TOOLBAR ─── */}
       <header className="h-14 flex items-center justify-between px-4 border-b border-border flex-shrink-0 gap-4">
 
-        {/* Left: back + logo */}
-        <div className="flex items-center gap-4 flex-shrink-0">
+        {/* Left: back + logo + tool switcher */}
+        <div className="flex items-center gap-7 flex-shrink-0">
           <button onClick={onLeave}
             className="flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-foreground transition-colors font-medium">
             <ArrowLeft className="w-3.5 h-3.5" />
@@ -190,6 +195,27 @@ export default function EmailEditorPage({ onLeave, onExport }) {
           </button>
           <div className="w-px h-5 bg-border" />
           <SlayteLogo size={22} />
+          {onNavigate && (
+            <>
+              <div className="w-px h-5 bg-border" />
+              <button
+                onClick={() => onNavigate('upload')}
+                className="text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Thumbnail
+              </button>
+              <button
+                onClick={() => onNavigate('export-sizes')}
+                className="text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Export Sizes
+              </button>
+              <span className="relative text-[13px] font-semibold text-foreground cursor-default">
+                Email Builder
+                <span className="absolute -bottom-[17px] left-0 right-0 h-[2px] bg-primary rounded-full" />
+              </span>
+            </>
+          )}
         </div>
 
         {/* Center: editable title + mode chip + actions */}

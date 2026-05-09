@@ -1,0 +1,422 @@
+/* ExportSizes.css */
+
+/* ── Section header ── */
+.es-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.es-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--foreground, #fff);
+  line-height: 1.3;
+}
+
+.es-section-sub {
+  font-size: 12px;
+  color: var(--muted-foreground, #555);
+  margin-top: 2px;
+}
+
+.es-selected-count {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted-foreground, #888);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+/* ── 3-column card grid ── */
+.es-sizes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+/* ── Individual card ── */
+.es-size-card {
+  position: relative;
+  background: #13131a;
+  border: 1px solid #2a2a3a;
+  border-radius: 12px;
+  padding: 20px 16px 16px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  /* reset button defaults */
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  font-family: inherit;
+  text-align: center;
+}
+
+.es-size-card:hover {
+  border-color: #5a3fa0;
+}
+
+.es-size-card.es-selected {
+  border-color: #7c5ce8;
+  box-shadow: 0 0 0 1px #7c5ce8, 0 0 20px rgba(124, 92, 232, 0.12);
+  background: rgba(124, 92, 232, 0.07);
+}
+
+/* ── Checkmark bubble (top-left) ── */
+.es-check {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 18px;
+  height: 18px;
+  background: #7c5ce8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.es-check svg {
+  width: 10px;
+  height: 10px;
+  stroke: #fff;
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Empty circle placeholder when not selected (keeps layout stable) */
+.es-check-empty {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid #2a2a3a;
+}
+
+/* ── Aspect ratio box ── */
+.es-aspect-box-wrapper {
+  width: 110px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.es-aspect-box {
+  border-radius: 4px;
+  border: 1.5px solid #444;
+  background: #1e1e2e;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.es-selected .es-aspect-box {
+  border-color: rgba(124, 92, 232, 0.7);
+  background: rgba(124, 92, 232, 0.18);
+}
+
+/* ── Text labels ── */
+.es-size-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted-foreground, #ccc);
+  line-height: 1.25;
+  transition: color 0.15s ease;
+}
+
+.es-selected .es-size-name {
+  color: var(--foreground, #fff);
+}
+
+.es-size-dims {
+  font-size: 11px;
+  font-family: monospace;
+  color: #555;
+  line-height: 1;
+}
+
+/* ── Ratio badge ── */
+.es-ratio-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: #1e1e2e;
+  border: 1px solid #2a2a3a;
+  border-radius: 999px;
+  padding: 2px 10px;
+  color: #666;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.es-selected .es-ratio-badge {
+  background: rgba(124, 92, 232, 0.2);
+  color: #a78bfa;
+}
+
+/* ════════════════════════════════════════════
+   Upload Zone — Two States
+   ════════════════════════════════════════════ */
+
+/* ── Empty state: full-width dashed dropzone ── */
+.es-dropzone {
+  position: relative;
+  height: 90px;
+  border: 1.5px dashed #2a2a3a;
+  border-radius: 10px;
+  background: #13131a;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+/* Hero variant — large centered dropzone when nothing uploaded */
+.es-hero-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 160px);
+}
+
+.es-hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.es-hero-headline {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--foreground, #fff);
+  letter-spacing: -0.02em;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.es-hero-tagline {
+  font-size: 14px;
+  color: #555;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.es-dropzone.es-dropzone--hero {
+  flex-direction: column;
+  width: 100%;
+  height: 340px;
+  gap: 14px;
+  border-radius: 20px;
+  border-width: 2px;
+}
+
+.es-dropzone-icon--lg {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+}
+
+.es-dropzone-title--lg {
+  font-size: 18px;
+}
+
+.es-dropzone:hover {
+  border-color: #5a3fa0;
+  background: rgba(92, 63, 160, 0.04);
+}
+
+.es-dropzone.es-dropzone--active {
+  border-color: rgba(124, 58, 237, 0.5);
+  background: rgba(124, 58, 237, 0.05);
+}
+
+.es-dropzone-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, rgba(124,58,237,0.15) 0%, rgba(93,202,165,0.1) 100%);
+  border: 1px solid #2a2a3a;
+  flex-shrink: 0;
+  color: #888;
+}
+
+.es-dropzone-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.es-dropzone-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--foreground, #e0e0e0);
+  line-height: 1;
+}
+
+.es-dropzone-sub {
+  font-size: 11px;
+  color: #555;
+  line-height: 1;
+}
+
+/* ── Filled state: horizontal bar ── */
+.es-upload-filled {
+  height: 90px;
+  border: 1px solid #2a2a3a;
+  border-radius: 10px;
+  background: #13131a;
+  display: flex;
+  align-items: center;
+  padding: 0 4px 0 16px;
+  gap: 0;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.es-upload-filled--active {
+  border-color: rgba(124, 58, 237, 0.5);
+}
+
+/* Left side: thumb + meta + remove */
+.es-filled-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Thumbnail */
+.es-filled-thumb {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 7px;
+  border: 1px solid #2a2a3a;
+  overflow: hidden;
+  background: #1e1e2e;
+}
+
+.es-filled-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* +N badge */
+.es-filled-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(124, 92, 232, 0.85);
+  border-radius: 3px;
+  padding: 0 4px;
+  line-height: 1.5;
+  pointer-events: none;
+}
+
+/* Meta text */
+.es-filled-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.es-filled-filename {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--foreground, #ddd);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.es-filled-filesize {
+  font-size: 11px;
+  color: #555;
+  white-space: nowrap;
+}
+
+.es-filled-more {
+  color: #444;
+}
+
+/* ✕ remove button */
+.es-filled-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #555;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease, color 0.15s ease;
+  padding: 0;
+  margin-left: 4px;
+}
+
+.es-filled-remove:hover {
+  background: rgba(255, 80, 80, 0.15);
+  color: #f66;
+}
+
+/* Right side: "+ Add more" dashed button */
+.es-filled-add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 90px;
+  height: 62px;
+  flex-shrink: 0;
+  border: 1.5px dashed #2a2a3a;
+  border-radius: 8px;
+  background: transparent;
+  color: #555;
+  cursor: pointer;
+  font-family: inherit;
+  margin-left: auto;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  padding: 0;
+}
+
+.es-filled-add span {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.es-filled-add:hover {
+  border-color: #5a3fa0;
+  color: #a78bfa;
+  background: rgba(124, 58, 237, 0.04);
+}
+

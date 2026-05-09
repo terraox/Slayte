@@ -63,7 +63,7 @@ function SliderRow({ label, value, unit = '', min, max, step = 1, onChange }) {
   );
 }
 
-export default function EditorPage({ image, onLeave }) {
+export default function EditorPage({ image, onLeave, onNavigate }) {
   const [layers, setLayers] = useState([]);
   const [expandedLayer, setExpandedLayer] = useState(null);
   const [subjectImageUrl, setSubjectImageUrl] = useState(null);
@@ -93,6 +93,11 @@ export default function EditorPage({ image, onLeave }) {
       console.warn("EditorPage: No image URL received");
     }
   }, [image]);
+
+  useEffect(() => {
+    document.title = 'Thumbnail Editor — Slayte';
+    return () => { document.title = 'Slayte'; };
+  }, []);
 
   const addLayer = () => {
     const id = Math.random().toString(36).substr(2, 9);
@@ -195,7 +200,7 @@ export default function EditorPage({ image, onLeave }) {
 
       {/* ─── HEADER ─── */}
       <header className="h-14 flex items-center justify-between px-5 border-b border-border flex-shrink-0">
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-7">
           <button
             onClick={onLeave}
             className="flex items-center gap-2 text-[13px] text-muted-foreground hover:text-foreground transition-colors font-medium">
@@ -204,6 +209,27 @@ export default function EditorPage({ image, onLeave }) {
           </button>
           <div className="w-px h-5 bg-border" />
           <SlayteLogo size={22} />
+          {onNavigate && (
+            <>
+              <div className="w-px h-5 bg-border" />
+              <span className="relative text-[13px] font-semibold text-foreground cursor-default">
+                Thumbnail
+                <span className="absolute -bottom-[17px] left-0 right-0 h-[2px] bg-primary rounded-full" />
+              </span>
+              <button
+                onClick={() => onNavigate('export-sizes')}
+                className="text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Export Sizes
+              </button>
+              <button
+                onClick={() => onNavigate('email')}
+                className="text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Email Builder
+              </button>
+            </>
+          )}
         </div>
 
         <div className="flex items-center gap-2.5">

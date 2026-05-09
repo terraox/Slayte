@@ -2,14 +2,16 @@ import { useState, useEffect } from 'react';
 import LandingPage from './pages/LandingPage';
 import EditorPage from './pages/EditorPage';
 import UploadPage from './pages/UploadPage';
+import ExportSizesPage from './pages/ExportSizesPage';
 import EmailEditorPage from './pages/email/EmailEditorPage';
 import Lenis from 'lenis';
 
 // Views: 'landing' → 'upload' (thumbnail flow) → 'editor'
 //        'landing' → 'email' (email flow — coming soon)
+//        'landing' → 'export-sizes' (multi-image resize flow)
 
 function App() {
-  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'upload' | 'editor' | 'email'
+  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'upload' | 'editor' | 'email' | 'export-sizes'
   const [uploadedImage, setUploadedImage] = useState(null);
   const [exportedEmailHtml, setExportedEmailHtml] = useState(null);
 
@@ -36,25 +38,38 @@ function App() {
     <>
       {currentView === 'landing' && (
         <LandingPage
-          onSelectTool={(tool) => setCurrentView(tool === 'thumbnail' ? 'upload' : 'email')}
+          onSelectTool={(tool) => {
+            if (tool === 'thumbnail') setCurrentView('upload');
+            else if (tool === 'email') setCurrentView('email');
+            else if (tool === 'export-sizes') setCurrentView('export-sizes');
+          }}
         />
       )}
       {currentView === 'upload' && (
         <UploadPage
           onImageUpload={handleImageUpload}
           onBack={() => setCurrentView('landing')}
+          onNavigate={(tool) => setCurrentView(tool)}
         />
       )}
       {currentView === 'editor' && (
         <EditorPage
           image={uploadedImage}
           onLeave={handleBack}
+          onNavigate={(tool) => setCurrentView(tool)}
         />
       )}
       {currentView === 'email' && (
         <EmailEditorPage
           onLeave={() => setCurrentView('landing')}
           onExport={(html) => setExportedEmailHtml(html)}
+          onNavigate={(tool) => setCurrentView(tool)}
+        />
+      )}
+      {currentView === 'export-sizes' && (
+        <ExportSizesPage
+          onBack={() => setCurrentView('landing')}
+          onNavigate={(tool) => setCurrentView(tool)}
         />
       )}
     </>

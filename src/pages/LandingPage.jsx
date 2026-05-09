@@ -104,8 +104,8 @@ export default function LandingPage({ onSelectTool }) {
         </div>
 
         {/* ─── TOOL CARDS ─── */}
-        <BlurFade delay={0.75} inView className="w-full max-w-[960px] mt-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <BlurFade delay={0.75} inView className="w-full max-w-[1200px] mt-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
             {/* Content Cover Studio Card */}
             <motion.div
@@ -113,7 +113,7 @@ export default function LandingPage({ onSelectTool }) {
               whileTap={{ scale: 0.99 }}
               transition={{ type: "spring", stiffness: 400, damping: 20 }}
               onClick={() => onSelectTool('thumbnail')}
-              className="group relative flex flex-col items-start p-9 rounded-[24px] border border-border bg-card/60 backdrop-blur-xl cursor-pointer overflow-hidden transition-colors duration-500 hover:border-foreground/20 hover:bg-muted/60 min-h-[280px]"
+              className="group relative flex flex-col items-start p-8 rounded-[24px] border border-border bg-card/60 backdrop-blur-xl cursor-pointer overflow-hidden transition-colors duration-500 hover:border-foreground/20 hover:bg-muted/60 min-h-[280px]"
             >
               {/* Top ambient glow */}
               <div className="absolute inset-0 rounded-[inherit] pointer-events-none overflow-hidden">
@@ -130,28 +130,28 @@ export default function LandingPage({ onSelectTool }) {
               <BorderBeam size={60} duration={10} colorFrom="#7c3aed" colorTo="#5DCAA5" />
 
               {/* Icon */}
-              <div className="relative p-4 rounded-2xl bg-gradient-to-br from-purple-500/15 to-teal-500/15 border border-border mb-6">
-                <Image size={26} strokeWidth={1.5} className="text-muted-foreground group-hover:text-foreground transition-colors" />
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/10 to-teal-500/10 blur-xl -z-10" />
+              <div className="relative p-3.5 rounded-xl bg-gradient-to-br from-purple-500/15 to-teal-500/15 border border-border mb-5">
+                <Image size={22} strokeWidth={1.5} className="text-muted-foreground group-hover:text-foreground transition-colors" />
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-purple-500/10 to-teal-500/10 blur-xl -z-10" />
               </div>
 
-              <h3 className="text-xl font-semibold text-foreground mb-2">
+              <h3 className="text-lg font-semibold text-foreground mb-1.5">
                 Content Cover Studio
               </h3>
-              <p className="text-[14px] leading-relaxed mb-8" style={{ color: 'hsl(var(--muted-foreground))' }}>
-                Upload an image and overlay text, effects, and filters. Perfect for YouTube thumbnails, social posts, and cover art.
+              <p className="text-[13px] leading-relaxed mb-6" style={{ color: 'hsl(var(--muted-foreground))' }}>
+                Overlay text, effects, and filters. Perfect for YouTube thumbnails and social posts.
               </p>
 
               {/* Bottom action */}
-              <div className="mt-auto flex items-center gap-2 text-[14px] font-medium text-[#7c3aed] group-hover:text-[#9f67ff] transition-colors">
+              <div className="mt-auto flex items-center gap-2 text-[13px] font-medium text-[#7c3aed] group-hover:text-[#9f67ff] transition-colors">
                 Start creating
                 <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
               </div>
 
               {/* Format tags */}
-              <div className="absolute bottom-7 right-7 flex gap-1">
-                {['JPG', 'PNG', 'SVG'].map((f) => (
-                  <span key={f} className="px-2 py-0.5 rounded text-[10px] font-medium border border-border bg-muted/50 text-muted-foreground">
+              <div className="absolute bottom-6 right-6 flex gap-1">
+                {['JPG', 'PNG'].map((f) => (
+                  <span key={f} className="px-1.5 py-0.5 rounded text-[9px] font-medium border border-border bg-muted/50 text-muted-foreground">
                     {f}
                   </span>
                 ))}
@@ -164,7 +164,7 @@ export default function LandingPage({ onSelectTool }) {
               whileTap={{ scale: 0.99 }}
               transition={{ type: "spring", stiffness: 400, damping: 20 }}
               onClick={() => onSelectTool('email')}
-              className="group relative flex flex-col items-start p-9 rounded-[24px] border border-border bg-card/60 backdrop-blur-xl cursor-pointer overflow-hidden transition-colors duration-500 hover:border-foreground/20 hover:bg-muted/60 min-h-[280px]"
+              className="group relative flex flex-col items-start p-8 rounded-[24px] border border-border bg-card/60 backdrop-blur-xl cursor-pointer overflow-hidden transition-colors duration-500 hover:border-foreground/20 hover:bg-muted/60 min-h-[280px]"
             >
               {/* Top ambient glow */}
               <div className="absolute inset-0 rounded-[inherit] pointer-events-none overflow-hidden">
@@ -181,28 +181,82 @@ export default function LandingPage({ onSelectTool }) {
               <BorderBeam size={60} duration={10} colorFrom="#5DCAA5" colorTo="#7c3aed" />
 
               {/* Icon */}
-              <div className="relative p-4 rounded-2xl bg-gradient-to-br from-teal-500/15 to-purple-500/15 border border-border mb-6">
-                <Mail size={26} strokeWidth={1.5} className="text-muted-foreground group-hover:text-foreground transition-colors" />
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-teal-500/10 to-purple-500/10 blur-xl -z-10" />
+              <div className="relative p-3.5 rounded-xl bg-gradient-to-br from-teal-500/15 to-purple-500/15 border border-border mb-5">
+                <Mail size={22} strokeWidth={1.5} className="text-muted-foreground group-hover:text-foreground transition-colors" />
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-teal-500/10 to-purple-500/10 blur-xl -z-10" />
               </div>
 
-              <h3 className="text-xl font-semibold text-foreground mb-2">
+              <h3 className="text-lg font-semibold text-foreground mb-1.5">
                 Email Writer
               </h3>
-              <p className="text-[14px] leading-relaxed mb-8" style={{ color: 'hsl(var(--muted-foreground))' }}>
-                Design rich HTML email templates visually. Drag, drop, and style — export clean code that works everywhere.
+              <p className="text-[13px] leading-relaxed mb-6" style={{ color: 'hsl(var(--muted-foreground))' }}>
+                Design rich HTML email templates visually. Drag, drop, and export clean code.
               </p>
 
               {/* Bottom action */}
-              <div className="mt-auto flex items-center gap-2 text-[14px] font-medium text-[#5DCAA5] group-hover:text-[#7ee8c7] transition-colors">
+              <div className="mt-auto flex items-center gap-2 text-[13px] font-medium text-[#5DCAA5] group-hover:text-[#7ee8c7] transition-colors">
                 Start writing
                 <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
               </div>
 
               {/* Tags */}
-              <div className="absolute bottom-7 right-7 flex gap-1">
+              <div className="absolute bottom-6 right-6 flex gap-1">
                 {['HTML', 'CSS'].map((f) => (
-                  <span key={f} className="px-2 py-0.5 rounded text-[10px] font-medium border border-border bg-muted/50 text-muted-foreground">
+                  <span key={f} className="px-1.5 py-0.5 rounded text-[9px] font-medium border border-border bg-muted/50 text-muted-foreground">
+                    {f}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Export Sizes Card */}
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.99 }}
+              transition={{ type: "spring", stiffness: 400, damping: 20 }}
+              onClick={() => onSelectTool('export-sizes')}
+              className="group relative flex flex-col items-start p-8 rounded-[24px] border border-border bg-card/60 backdrop-blur-xl cursor-pointer overflow-hidden transition-colors duration-500 hover:border-foreground/20 hover:bg-muted/60 min-h-[280px]"
+            >
+              {/* Top ambient glow */}
+              <div className="absolute inset-0 rounded-[inherit] pointer-events-none overflow-hidden">
+                <div 
+                  className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-[1px] opacity-50"
+                  style={{ background: 'linear-gradient(90deg, transparent, rgba(124,58,237,0.5), rgba(93,202,165,0.5), transparent)' }}
+                />
+                <div 
+                  className="absolute top-0 left-1/2 -translate-x-1/2 w-[50%] h-20 opacity-[0.05] transition-opacity duration-500 group-hover:opacity-[0.1]"
+                  style={{ background: 'radial-gradient(ellipse at top, #7c3aed, transparent)' }}
+                />
+              </div>
+
+              <BorderBeam size={60} duration={10} colorFrom="#7c3aed" colorTo="#5DCAA5" />
+
+              {/* Icon */}
+              <div className="relative p-3.5 rounded-xl bg-gradient-to-br from-purple-500/15 to-teal-500/15 border border-border mb-5">
+                <div className="flex gap-0.5">
+                  <div className="w-2.5 h-2.5 border border-muted-foreground rounded-sm" />
+                  <div className="w-3.5 h-3.5 border border-muted-foreground rounded-sm" />
+                </div>
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-purple-500/10 to-teal-500/10 blur-xl -z-10" />
+              </div>
+
+              <h3 className="text-lg font-semibold text-foreground mb-1.5">
+                Export Sizes
+              </h3>
+              <p className="text-[13px] leading-relaxed mb-6" style={{ color: 'hsl(var(--muted-foreground))' }}>
+                Resize multiple images to all standard social media dimensions in one click.
+              </p>
+
+              {/* Bottom action */}
+              <div className="mt-auto flex items-center gap-2 text-[13px] font-medium text-[#7c3aed] group-hover:text-[#9f67ff] transition-colors">
+                Start resizing
+                <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+              </div>
+
+              {/* Tags */}
+              <div className="absolute bottom-6 right-6 flex gap-1">
+                {['BATCH', 'RESIZE'].map((f) => (
+                  <span key={f} className="px-1.5 py-0.5 rounded text-[9px] font-medium border border-border bg-muted/50 text-muted-foreground">
                     {f}
                   </span>
                 ))}
